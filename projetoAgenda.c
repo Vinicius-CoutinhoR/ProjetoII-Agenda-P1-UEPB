@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 typedef struct{
     char nomeEstrutura[40];
@@ -117,7 +118,7 @@ void transferirAgendaParaArquivo(Agenda *contatos){
     fclose(arquivo);
 }
 
-Agenda * Excluir_contato(Agenda *contatos, int posicao){
+Agenda * excluirContato(Agenda *contatos, int posicao){
     Agenda *contatoParaExcluir = contatos;
     Agenda *auxiliarDeReligagemDosContatos = NULL;
     int i;
@@ -154,6 +155,213 @@ void excluirTodosOsContatos(Agenda *contatos){
     }
 }
 
+/*INICIO DAS FUNÇÕES DE CALENDARIO
+Função que retorna o índice do
+dia para a data DD/MM/YYYY
+ss*/
+int numeroDoDia(int dia, int mes, int ano)
+{
+  
+    static int t[] = { 0, 3, 2, 5, 0, 3,
+                       5, 1, 4, 6, 2, 4 };
+    ano -= mes < 3;
+    return (ano + ano / 4
+            - ano / 100
+            + ano / 400
+            + t[mes - 1] + dia)
+           % 7;
+}
+  
+/* Function that returns the name of the
+mes for the given mes Number
+January - 0, February - 1 and so on*/
+char * receberNomeMes(int numeroDoMes)
+{
+    char* mes;
+  
+    switch (numeroDoMes) {
+    case 0:
+        mes = "Janeiro";
+        break;
+    case 1:
+        mes = "Fevereiro";
+        break;
+    case 2:
+        mes = "Marco";
+        break;
+    case 3:
+        mes = "Abril";
+        break;
+    case 4:
+        mes = "Maio";
+        break;
+    case 5:
+        mes = "Junho";
+        break;
+    case 6:
+        mes = "Julho";
+        break;
+    case 7:
+        mes = "Agosto";
+        break;
+    case 8:
+        mes = "Setembro";
+        break;
+    case 9:
+        mes = "Outubro";
+        break;
+    case 10:
+        mes = "Novembro";
+        break;
+    case 11:
+        mes = "Dezembro";
+        break;
+    }
+    return mes;
+}
+  
+// Function to return the number of dias
+// in a mes
+int numeroDeDias(int numeroDoMes, int ano)
+{
+    // Janeiro
+    if (numeroDoMes == 0)
+        return (31);
+  
+    // Fevereiro
+    if (numeroDoMes == 1) {
+        // If the ano is leap then Feb
+        // has 29 dias
+        if (ano % 400 == 0
+            || (ano % 4 == 0
+                && ano % 100 != 0))
+            return (29);
+        else
+            return (28);
+    }
+  
+    // Março
+    if (numeroDoMes == 2)
+        return (31);
+  
+    // Abril
+    if (numeroDoMes == 3)
+        return (30);
+  
+    // Maio
+    if (numeroDoMes == 4)
+        return (31);
+  
+    // Junho
+    if (numeroDoMes == 5)
+        return (30);
+  
+    // Julho
+    if (numeroDoMes == 6)
+        return (31);
+  
+    // Agosto
+    if (numeroDoMes == 7)
+        return (31);
+  
+    // Setembro
+    if (numeroDoMes == 8)
+        return (30);
+  
+    // Outubro
+    if (numeroDoMes == 9)
+        return (31);
+  
+    // Novembro
+    if (numeroDoMes == 10)
+        return (30);
+  
+    // Dezembro
+    if (numeroDoMes == 11)
+        return (31);
+}
+  
+// Function to print the calendar of
+// the given ano
+void exibirCalendario(int ano, int mes)
+{
+    int dias;
+  
+    // Index of the dia from 0 to 6
+    int atual = numeroDoDia(1, mes, ano);
+  
+    // i for Iterate through months
+    // j for Iterate through dias
+    // of the mes - i
+    for (int i = mes-1; i < mes; i++) {
+        dias = numeroDeDias(i, ano);
+  
+        // Print the atual mes name
+        printf("\n ---------- %s - %d -----------\n",
+               receberNomeMes(i),ano);
+  
+        // Print the columns
+        printf(" Dom   Seg  Ter  Qua  Qui  Sex  Sab\n");
+  
+        // Print appropriate spaces
+        int k;
+        for (k = 0; k < atual; k++)
+            printf("     ");
+  
+        for (int j = 1; j <= dias; j++) {
+            printf("%5d", j);
+  
+            if (++k > 6) {
+                k = 0;
+                printf("\n");
+            }
+        }
+  
+        if (k)
+            printf("\n");
+  
+        atual = k;
+    }
+  
+    return;
+}
+//FINAL DO CALENDARIO
+
+int calendario()
+{
+    SYSTEMTIME t;
+    GetLocalTime(&t);
+
+    int mes = t.wMonth;
+    int ano = t.wYear;
+    // Function Call
+    exibirCalendario(ano, mes);
+    return 0;
+}
+
+int data(){
+    SYSTEMTIME data;
+    GetLocalTime(&data);
+    int dia = data.wDay;
+    int mes = data.wMonth;
+    int ano = data.wYear;
+
+    int minuto = data.wMinute;
+    int hora = data.wHour;
+
+    if(minuto < 10) {
+        printf(" Hora: %d:0%d \n",hora,minuto);
+    } else {
+        printf(" Hora: %d:%d \n",hora,minuto);
+    }
+    if(mes < 10) {
+        printf(" Data: %d/0%d/%d",dia,mes,ano);
+    } else {
+        printf(" Data: %d/%d/%d",dia,mes,ano);
+    }
+    return 0;
+}
+
 int main(){
     FILE *salvaContatosEmArquivo;
     Agenda *contato = NULL;
@@ -169,13 +377,16 @@ int main(){
 
     salvaContatosEmArquivo = fopen("contatos.txt", "ab");
 
-    printf("\n-Agendinha-\n");
-
-    while(entrada != 6){
+    while(entrada != 7){
         transferirAgendaParaArquivo(contato);
-
-        printf("\n- - - -MENU- - - -\n1 - Inserir Contato \n2 - Listar Contatos \n3 - Buscar Contato");
-        printf("\n4 - Excluir Contato \n5 - Limpar a agenda \n6 - Sair\n-");
+        printf(" ----- Agenda em C -----\n");
+        data();
+        calendario();
+        printf(" -----------------------------------\n");
+        printf("\n");
+        printf(" ------- MENU -------\n 1 - Inserir Contato \n 2 - Listar Contatos \n 3 - Buscar Contato");
+        printf("\n 4 - Excluir Contato \n 5 - Limpar a agenda \n 6 - Sair\n");
+        printf(" --------------------\n");
         scanf("%d", &entrada);
         setbuf(stdin, NULL);
 
@@ -216,7 +427,7 @@ int main(){
             printf("\nInsira o nome do contato para excluir:\n");
             gets(&chaveDeBusca);
 
-            contato = Excluir_contato(contato, buscaContatoDaAgenda(contato, chaveDeBusca));
+            contato = excluirContato(contato, buscaContatoDaAgenda(contato, chaveDeBusca));
         }
 
         if(entrada == 5){
@@ -226,6 +437,7 @@ int main(){
 
             salvaContatosEmArquivo = fopen("contatos.txt", "wb");
         }
+        
     }
     printf("\nFim do programa");
 
