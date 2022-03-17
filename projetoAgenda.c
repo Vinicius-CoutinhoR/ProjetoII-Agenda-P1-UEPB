@@ -2,6 +2,63 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <conio.h>
+
+//Cores:
+void black() {
+    printf("\033[0;30m");
+}
+void red() {
+    printf("\033[0;31m");
+}
+void yellow() {
+    printf("\033[0;33m");
+}
+void blue() {
+    printf("\033[0;34m");
+}
+void green() {
+    printf("\033[0;32m");
+}
+void white() {
+    printf("\033[0;37m");
+}
+void cyan() {
+    printf("\033[0;36m");
+}
+void purple() {
+    printf("Purple \033[0;35m");
+}
+
+//NEGRITO
+
+void blackBold() {
+    printf("\033[1;30m");
+}
+void redBold() {
+    printf("\033[1;31m");
+}
+void yellowBold() {
+    printf("\033[1;33m");
+}
+void blueBold() {
+    printf("\033[1;34m");
+}
+void greenBold() {
+    printf("\033[1;32m");
+}
+void whiteBold() {
+    printf("\033[1;37m");
+}
+void cyanBold() {
+    printf("\033[1;36m");
+}
+void purpleBold() {
+    printf("Purple \033[1;35m");
+}
+void reset() {
+    printf("\033[0m");
+}
 
 typedef struct{
     char nomeEstrutura[40];
@@ -297,11 +354,18 @@ void exibirCalendario(int ano, int mes)
         dias = numeroDeDias(i, ano);
   
         // Print the atual mes name
+        blue();
         printf("\n ---------- %s - %d -----------\n",
                receberNomeMes(i),ano);
   
         // Print the columns
-        printf(" Dom   Seg  Ter  Qua  Qui  Sex  Sab\n");
+        red();
+        printf(" Dom");
+        cyan();
+        printf("   Seg  Ter  Qua  Qui  Sex  ");
+        red();
+        printf("Sab\n");
+        reset();
   
         // Print appropriate spaces
         int k;
@@ -339,7 +403,7 @@ int calendario()
     return 0;
 }
 
-int data(){
+int imprimirData() {
     SYSTEMTIME data;
     GetLocalTime(&data);
     int dia = data.wDay;
@@ -377,12 +441,18 @@ int main(){
 
     salvaContatosEmArquivo = fopen("contatos.txt", "ab");
 
-    while(entrada != 7){
+    while(entrada != 6){
         transferirAgendaParaArquivo(contato);
-        printf(" ----- Agenda em C -----\n");
-        data();
+        blue();
+        printf(" ----------- Agenda em C -----------\n");
+        reset();
+
+        imprimirData();
         calendario();
-        printf(" -----------------------------------\n");
+        blue();
+        printf(" ------------------------------------\n");
+        reset();
+        
         printf("\n");
         printf(" ------- MENU -------\n 1 - Inserir Contato \n 2 - Listar Contatos \n 3 - Buscar Contato");
         printf("\n 4 - Excluir Contato \n 5 - Limpar a agenda \n 6 - Sair\n");
