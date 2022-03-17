@@ -444,7 +444,7 @@ int main(){
     while(entrada != 6){
         transferirAgendaParaArquivo(contato);
         blue();
-        printf(" ----------- Agenda em C -----------\n");
+        printf("\n ----------- Agenda em C -----------\n");
         reset();
 
         imprimirData();
