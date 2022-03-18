@@ -229,7 +229,7 @@ int numeroDoDia(int dia, int mes, int ano)
 /* Function that returns the name of the
 mes for the given mes Number
 January - 0, February - 1 and so on*/
-char * receberNomeMes(int numeroDoMes)
+char * imprimeNomeMes(int numeroDoMes)
 {
     char* mes;
   
@@ -353,7 +353,7 @@ void exibirCalendario(int ano, int mes)
         // Print the atual mes name
         blue();
         printf("\n ---------- %s - %d -----------\n",
-               receberNomeMes(i),ano);
+               imprimeNomeMes(i),ano);
   
         // Print the columns
         red();
@@ -513,7 +513,7 @@ int main(){
     while(entrada != 7){
         transferirAgendaParaArquivo(contato);
         blue();
-        printf(" ----------- Agenda em C -----------\n");
+        printf("\n ----------- Agenda em C -----------\n");
         reset();
 
         imprimirData();
