@@ -29,9 +29,7 @@ void cyan() {
 void purple() {
     printf("Purple \033[0;35m");
 }
-
 //NEGRITO
-
 void blackBold() {
     printf("\033[1;30m");
 }
@@ -59,7 +57,6 @@ void purpleBold() {
 void reset() {
     printf("\033[0m");
 }
-
 typedef struct{
     char nomeEstrutura[40];
     char telefoneEstrutura[15];
@@ -414,18 +411,90 @@ int imprimirData() {
     int hora = data.wHour;
 
     if(minuto < 10) {
-        printf(" Hora: %d:0%d \n",hora,minuto);
+        blue();
+        printf(" Hora: ");
+        cyan();
+        printf("%d:0%d \n",hora,minuto);
+        reset();
     } else {
-        printf(" Hora: %d:%d \n",hora,minuto);
+        blue();
+        printf(" Hora: ");
+        cyan();
+        printf("%d:%d \n",hora,minuto);
+        reset();
     }
     if(mes < 10) {
-        printf(" Data: %d/0%d/%d",dia,mes,ano);
+        blue();
+        printf(" Data: ");
+        cyan();
+        printf("%d/0%d/%d",dia,mes,ano);
+        reset();
     } else {
-        printf(" Data: %d/%d/%d",dia,mes,ano);
+        blue();
+        printf(" Data: ");
+        cyan();
+        printf("%d/%d/%d",dia,mes,ano);
+        reset();
     }
     return 0;
 }
 
+void abrirAgenda() {
+    
+    int data;
+    char lembrete[2048];
+
+
+    blue();
+    printf(" -----------------------------------");
+    reset();
+    printf("\n");
+    printf(" Tens x notificacoes,\n X para 18 de marco e X para amanha.\n");
+    blue();
+    printf(" -----------------------------------\n");
+    reset();
+    printf(" 1 - | Criar novo lembrete |\n 2 - | Alterar lembrete    |\n");
+    printf(" 3 - | Ver lembretes       |\n 4 - | Remover lembretes   | \n");
+
+    int seletorAgenda;
+    scanf("%d",&seletorAgenda);
+    if(seletorAgenda == 1) {
+
+        printf("Selecione o dia que queira ser notificado: ");
+        scanf("%d",&data);
+        printf("\n");
+        printf("Lembrete: \n");
+        scanf("%s",lembrete);
+        
+    }
+    else  if(seletorAgenda == 2) {
+
+    }
+
+    else if(seletorAgenda == 3) {
+
+    }
+
+    else if(seletorAgenda == 4) {
+
+    }
+    
+
+
+
+
+}
+
+void abrirMenu() {
+    blue();
+    printf(" -------- MENU --------\n");
+    reset();
+    printf(" 1 - | Inserir Contato \n 2 - | Listar Contatos \n 3 - | Buscar Contato");
+    printf("\n 4 - | Excluir Contato \n 5 - | Limpar a agenda \n 6 - | Abrir agenda \n 7 - | Sair\n");
+    blue();
+    printf(" ----------------------\n");
+    reset();
+}
 int main(){
     FILE *salvaContatosEmArquivo;
     Agenda *contato = NULL;
@@ -441,22 +510,19 @@ int main(){
 
     salvaContatosEmArquivo = fopen("contatos.txt", "ab");
 
-    while(entrada != 6){
+    while(entrada != 7){
         transferirAgendaParaArquivo(contato);
         blue();
         printf(" ----------- Agenda em C -----------\n");
         reset();
 
         imprimirData();
-        calendario();
         blue();
-        printf(" ------------------------------------\n");
+        printf("\n -----------------------------------\n");
         reset();
         
         printf("\n");
-        printf(" ------- MENU -------\n 1 - Inserir Contato \n 2 - Listar Contatos \n 3 - Buscar Contato");
-        printf("\n 4 - Excluir Contato \n 5 - Limpar a agenda \n 6 - Sair\n");
-        printf(" --------------------\n");
+        abrirMenu();
         scanf("%d", &entrada);
         setbuf(stdin, NULL);
 
@@ -487,7 +553,7 @@ int main(){
 
         if(entrada == 3){
 
-            printf("\nInssira o nome do contato para a busca:\n");
+            printf("\nInsira o nome do contato para a busca:\n");
             gets(&chaveDeBusca);
 
             imprimeContatoDaAgenda(contato, buscaContatoDaAgenda(contato, chaveDeBusca));
@@ -506,6 +572,15 @@ int main(){
             contato = NULL;
 
             salvaContatosEmArquivo = fopen("contatos.txt", "wb");
+        }
+        if(entrada == 6) {
+            char entradaAgenda = 'n';
+            while(entradaAgenda != 's') {
+                calendario();
+                abrirAgenda();
+                printf(" Deseja voltar ao menu? [s/n] ");
+                scanf("%c",&entradaAgenda);
+            }
         }
         
     }
