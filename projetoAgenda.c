@@ -441,8 +441,10 @@ int imprimirData() {
 
 void abrirAgenda() {
     
+    
     int data;
     char lembrete[2048];
+
 
 
     blue();
@@ -453,8 +455,8 @@ void abrirAgenda() {
     blue();
     printf(" -----------------------------------\n");
     reset();
-    printf(" 1 - | Criar novo lembrete |\n 2 - | Alterar lembrete    |\n");
-    printf(" 3 - | Ver lembretes       |\n 4 - | Remover lembretes   | \n");
+    printf(" 1 - | Criar novo lembrete |\n 2 - | Ver lembrete        |\n");
+    printf(" 3 - | Remover lembrete    |\n 4 - | Sair                | \n");
 
     int seletorAgenda;
     scanf("%d",&seletorAgenda);
@@ -465,6 +467,8 @@ void abrirAgenda() {
         printf("\n");
         printf("Lembrete: \n");
         scanf("%s",lembrete);
+
+
         
     }
     else  if(seletorAgenda == 2) {
