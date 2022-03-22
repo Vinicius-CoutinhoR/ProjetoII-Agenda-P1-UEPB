@@ -180,7 +180,7 @@ void imprimeLembreteDaAgenda(EstruturaDeLembrete *lembrete, int posicao){
         for(i=1;i<posicao;i++){
             lembrete = lembrete->proximoLembrete;
         }
-        printf("\ nDia %d/%d/%d:\n", lembrete->diaEstrutura, lembrete->mesEstrutura, lembrete->anoEstrutura);
+        printf("\n Dia %d/%d/%d:\n", lembrete->diaEstrutura, lembrete->mesEstrutura, lembrete->anoEstrutura);
         printf("\n%s\n", lembrete->lembreteEstrutura);
     }
 }
@@ -191,7 +191,7 @@ int buscarContatoDaAgenda(EstruturaDeContato *contato, char nome[40]){
     EstruturaDeContato *ponteiroDeBusca = contato;
 
     if(contato == NULL){ // Essa condicional serve para resolver um erro que ocorre quando busca algo em uma lista encadeada nula.
-        printf("\nNao foi possivel encontrar '%s'\n", nome);
+        printf("\n Nao foi possivel encontrar '%s'\n", nome);
         return 0;
     }
 
@@ -201,7 +201,7 @@ int buscarContatoDaAgenda(EstruturaDeContato *contato, char nome[40]){
         i++;
 
         if(ponteiroDeBusca == NULL){
-        printf("\nNao foi possivel encontrar '%s'\n", nome);
+        printf("\n Nao foi possivel encontrar '%s'\n", nome);
         return 0;
         }
     }
@@ -598,6 +598,7 @@ int imprimirData() {
     return 0;
 }
 
+// parte do menu dos lembretes.
 EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembrete) {
     
     int dia, mes, ano;
@@ -667,7 +668,8 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
         blue();
         printf(" -----------------------------------\n");
         reset();
-
+        
+        // criar lembretes
         if(entradaDeSelecao == 1) {
 
             blue();
@@ -685,6 +687,8 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
 
             primeiroLembrete = inserirLembretePelaFrente(primeiroLembrete, dia, mes, ano, lembrete);
         }
+
+        // exibir lembretes
         else if(entradaDeSelecao == 2) {
             
             setbuf(stdin, NULL);
@@ -721,6 +725,7 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
             }
         }
         
+        // excluir
         else if(entradaDeSelecao == 3) {
             int i;
             
@@ -812,6 +817,7 @@ void abrirMenu() {
     reset();
 }
 
+// MAIN
 int main(){
     FILE *salvaContatosEmArquivo;
     EstruturaDeContato *contato = NULL;
