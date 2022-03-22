@@ -135,13 +135,12 @@ void imprimirTodosOsContatos(EstruturaDeContato *contato){
     int i = 1;
 
     while (contato != NULL){
-        blue();
-        printf("\n Contato %d", i);
-        printf("\n - Nome:     |%s", contato->nomeEstrutura);
-        printf("\n - Telefone: |%s", contato->telefoneEstrutura);
-        printf("\n - Celular:  |%s", contato->celularEstrutura);
-        printf("\n - Email:    |%s\n", contato->emailEstrutura);
-        reset();
+        printf("\nContato %d", i);
+        printf("\n-Nome:     |%s", contato->nomeEstrutura);
+        printf("\n-Telefone: |%s", contato->telefoneEstrutura);
+        printf("\n-Celular:  |%s", contato->celularEstrutura);
+        printf("\n-Email:    |%s\n", contato->emailEstrutura);
+        
         contato = contato->proximoContato;
         i++;
     }
@@ -606,7 +605,6 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
     int diaChave, mesChave, anoChave;
     int vetorDasPosicoesDosLembretes[300]; // esse vetor tem varias posiçoes, que são as posições dos lembretes que queremos imprimir.
 
-
     primeiroLembrete = transferirLembretesDoArquivoParaOPrograma(primeiroLembrete);
 
     salvarLembretesEmArquivo = fopen("lembretes.txt", "ab");
@@ -641,8 +639,8 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
         }
         else if(entradaDeSelecao == 2) {
             
-            setbuf(stdin, NULL);
             entradaChar = 'n';
+            setbuf(stdin, NULL);
             printf("Deseja ver todos os lembretes? (s/n) ");
             scanf("%c", &entradaChar);
 
@@ -708,35 +706,9 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
 void abrirMenu() {
     blue();
     printf(" -------- MENU --------\n");
-    cyan();
-    yellow();
-    printf(" 1 - |");
-    cyan();
-    printf(" Inserir Contato \n");
-    yellow();
-    printf(" 2 - |");
-    cyan();
-    printf(" Listar Contatos \n");
-    yellow();
-    printf(" 3 - |");
-    cyan();
-    printf(" Buscar Contato\n");
-    yellow();
-    printf(" 4 - |");
-    cyan();
-    printf(" Excluir Contato\n");
-    yellow();
-    printf(" 5 - |");
-    cyan();
-    printf(" Limpar os Contatos\n");
-    yellow();
-    printf(" 6 - |");
-    cyan();
-    printf(" Abrir Agenda \n");
-    yellow();
-    printf(" 7 - |");
-    redBold();
-    printf(" Sair\n");
+    reset();
+    printf(" 1 - | Inserir Contato \n 2 - | Listar Contatos \n 3 - | Buscar Contato");
+    printf("\n 4 - | Excluir Contato \n 5 - | Limpar os contatos \n 6 - | Abrir calendario e lembretes \n 7 - | Sair\n");
     blue();
     printf(" ----------------------\n");
     reset();
@@ -771,49 +743,29 @@ int main(){
         
         printf("\n");
         abrirMenu();
-        red();
-        printf(" ");
         scanf("%d", &entrada);
-        reset();
-        blue();
-        printf("\n ----------------------\n");
-        reset();
         setbuf(stdin, NULL);
 
         if(entrada == 1){
-            blue();
-            printf(" - Inserindo Contatos -\n");
-            printf(" ----------------------\n");
-
-            printf("\n Nome do novo contato: ");
-
-            cyan();
+            printf("\nNome do novo contato: ");
             gets(&nomeContato);
 
-            blue();
-            printf(" Telefone do novo contato: ");
-
-            cyan();
+            printf("Telefone do novo contato: ");
             gets(&telefoneContato);
 
-            blue();
-            printf(" Celular do novo contato: ");
-
-            cyan();
+            printf("Celular do novo contato: ");
             gets(&celularContato);
 
-            blue();
-            printf(" Email do novo contato: ");
-            cyan();
+            printf("Email do novo contato: ");
             gets(&emailContato);
-            reset();
+
             contato = inserirContatoPelaFrente(contato, nomeContato, telefoneContato, emailContato, celularContato);
         }
 
         if(entrada == 2){
             
             if(contato == NULL) {
-                printf("Nao ha contatos na Agenda!");
+                printf("Nao ha contatos na EstruturaDeContato!");
             } else {
                 imprimirTodosOsContatos(contato);
             }
