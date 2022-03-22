@@ -318,6 +318,32 @@ EstruturaDeContato * excluirContato(EstruturaDeContato *contatos, int posicao){
     }
 }
 
+EstruturaDeLembrete * excluirLembrete(EstruturaDeLembrete *lembretes, int posicao){
+    EstruturaDeLembrete *lembreteParaExcluir = lembretes;
+    EstruturaDeLembrete *auxiliarDeReligagemDosLembretes = NULL;
+    int i;
+
+    if(posicao != 0){
+
+        for(i=1;i<posicao;i++){
+            auxiliarDeReligagemDosLembretes = lembreteParaExcluir;
+            lembreteParaExcluir = lembreteParaExcluir->proximoLembrete;
+        }
+
+        printf("\nLembrete excluido com susseso\n");
+
+        if(auxiliarDeReligagemDosLembretes == NULL){
+            auxiliarDeReligagemDosLembretes = lembreteParaExcluir->proximoLembrete;
+            free(lembreteParaExcluir);
+            return auxiliarDeReligagemDosLembretes;
+        } else {
+            auxiliarDeReligagemDosLembretes->proximoLembrete = lembreteParaExcluir->proximoLembrete;
+            free(lembreteParaExcluir);
+            return(lembretes);
+        }
+    }
+}
+
 void excluirTodosOsContatos(EstruturaDeContato *contatos){
     EstruturaDeContato *contatoParaExcluir = contatos;
     EstruturaDeContato *auxiliarExclusao;
@@ -326,6 +352,17 @@ void excluirTodosOsContatos(EstruturaDeContato *contatos){
         auxiliarExclusao = (EstruturaDeContato *) contatoParaExcluir->proximoContato;
         free(contatoParaExcluir);
         contatoParaExcluir = auxiliarExclusao;
+    }
+}
+
+void excluirTodosOsLembretes(EstruturaDeLembrete *lembretes){
+    EstruturaDeLembrete *lembreteParaExcluir = lembretes;
+    EstruturaDeLembrete *auxiliarExclusao;
+
+    while(lembreteParaExcluir != NULL){
+        auxiliarExclusao = (EstruturaDeLembrete *) lembreteParaExcluir->proximoLembrete;
+        free(lembreteParaExcluir);
+        lembreteParaExcluir = auxiliarExclusao;
     }
 }
 
@@ -565,6 +602,10 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
     char lembrete[2048];
     int entradaDeSelecao = 0;
     FILE *salvarLembretesEmArquivo;
+    char entradaChar;
+    int diaChave, mesChave, anoChave;
+    int vetorDasPosicoesDosLembretes[300]; // esse vetor tem varias posiçoes, que são as posições dos lembretes que queremos imprimir.
+
 
     primeiroLembrete = transferirLembretesDoArquivoParaOPrograma(primeiroLembrete);
 
@@ -601,7 +642,7 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
         else if(entradaDeSelecao == 2) {
             
             setbuf(stdin, NULL);
-            char entradaChar;
+            entradaChar = 'n';
             printf("Deseja ver todos os lembretes? (s/n) ");
             scanf("%c", &entradaChar);
 
@@ -609,9 +650,7 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
                 imprimirTodosOsLembretes(primeiroLembrete);
             }
             else{
-                int vetorDasPosicoesDosLembretes[300]; // esse vetor tem varias posiçoes, que são as posições dos lembretes que queremos imprimir.
                 int i;
-                int diaChave, mesChave, anoChave;
                 
                 for(i=0;i<300;i++){
                     vetorDasPosicoesDosLembretes[i] = 0;
@@ -628,7 +667,36 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
         }
         
         else if(entradaDeSelecao == 3) {
+            int i;
+            
+            setbuf(stdin, NULL);
+            entradaChar = 'n';
+            printf("\nDeseja excluir todos os lembretes? (s/n)\n");
+            scanf("%c", &entradaChar);
 
+            if(entradaChar == 's'){
+                excluirTodosOsLembretes(primeiroLembrete);
+                primeiroLembrete = NULL;
+                printf("\nTodos os lembretes foram excluidos\n");
+
+                transferirLembretesParaArquivo(primeiroLembrete);
+            }else{
+                int n;
+
+                setbuf(stdin, NULL);
+                printf("\nInforme a data do lembrete que deseja excluir (dd/mm/aaaa): ");
+                scanf("%d/%d/%d", &diaChave, &mesChave, &anoChave);
+
+                for(i=0;i<buscarLembreteDaAgenda(primeiroLembrete, diaChave, mesChave, anoChave, vetorDasPosicoesDosLembretes);i++){
+                    imprimeLembreteDaAgenda(primeiroLembrete, vetorDasPosicoesDosLembretes[i]);
+                }
+
+                setbuf(stdin, NULL);
+                printf("\nQual dos lembretes deseja excluir? (digite o numero da ordem que apareceu)\n");
+                scanf("%d", &n);
+                
+                primeiroLembrete = excluirLembrete(primeiroLembrete, vetorDasPosicoesDosLembretes[n-1]);
+            }
         }
     }
 
