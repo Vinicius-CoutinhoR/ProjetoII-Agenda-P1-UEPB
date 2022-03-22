@@ -135,12 +135,13 @@ void imprimirTodosOsContatos(EstruturaDeContato *contato){
     int i = 1;
 
     while (contato != NULL){
-        printf("\nContato %d", i);
-        printf("\n-Nome:     |%s", contato->nomeEstrutura);
-        printf("\n-Telefone: |%s", contato->telefoneEstrutura);
-        printf("\n-Celular:  |%s", contato->celularEstrutura);
-        printf("\n-Email:    |%s\n", contato->emailEstrutura);
-        
+        blue();
+        printf("\n Contato %d", i);
+        printf("\n - Nome:     |%s", contato->nomeEstrutura);
+        printf("\n - Telefone: |%s", contato->telefoneEstrutura);
+        printf("\n - Celular:  |%s", contato->celularEstrutura);
+        printf("\n - Email:    |%s\n", contato->emailEstrutura);
+        reset();
         contato = contato->proximoContato;
         i++;
     }
@@ -163,10 +164,12 @@ void imprimeContatoDaAgenda(EstruturaDeContato *contato, int posicao){
         for(i=1;i<posicao;i++){
             contato = contato->proximoContato;
         }
-        printf("\n- %s -", contato->nomeEstrutura);
-        printf("\n-Telefone: |%s", contato->telefoneEstrutura);
-        printf("\n-Celular:  |%s", contato->celularEstrutura);
-        printf("\n-Email:    |%s\n", contato->emailEstrutura);
+
+        blue();
+        printf("\n - %s -", contato->nomeEstrutura);
+        printf("\n - Telefone: |%s", contato->telefoneEstrutura);
+        printf("\n - Celular:  |%s", contato->celularEstrutura);
+        printf("\n - Email:    |%s\n", contato->emailEstrutura);
     }
 }
 
@@ -177,7 +180,7 @@ void imprimeLembreteDaAgenda(EstruturaDeLembrete *lembrete, int posicao){
         for(i=1;i<posicao;i++){
             lembrete = lembrete->proximoLembrete;
         }
-        printf("\nDia %d/%d/%d:\n", lembrete->diaEstrutura, lembrete->mesEstrutura, lembrete->anoEstrutura);
+        printf("\ nDia %d/%d/%d:\n", lembrete->diaEstrutura, lembrete->mesEstrutura, lembrete->anoEstrutura);
         printf("\n%s\n", lembrete->lembreteEstrutura);
     }
 }
@@ -605,6 +608,7 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
     int diaChave, mesChave, anoChave;
     int vetorDasPosicoesDosLembretes[300]; // esse vetor tem varias posiçoes, que são as posições dos lembretes que queremos imprimir.
 
+
     primeiroLembrete = transferirLembretesDoArquivoParaOPrograma(primeiroLembrete);
 
     salvarLembretesEmArquivo = fopen("lembretes.txt", "ab");
@@ -617,34 +621,83 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
         printf("\n -----------------------------------");
         reset();
         printf("\n");
-        printf(" Tens x notificacoes,\n X para 18 de marco e X para amanha.\n");
+
+        cyanBold();
+        printf(" Tens ");
+        redBold();
+        printf("X");
+        cyanBold();
+        printf(" notificacoes,\n");
+        redBold(); 
+        printf(" X");
+        cyanBold();
+        printf(" para 18 de marco e ");
+        redBold();
+        printf("X");
+        cyanBold();
+        printf(" para amanha.\n");
         blue();
         printf(" -----------------------------------\n");
         reset();
-        printf(" 1 - | Criar novo lembrete |\n 2 - | Ver lembrete        |\n");
-        printf(" 3 - | Remover lembrete    |\n 4 - | Sair                | \n");
 
+        yellow();
+        printf(" 1 - |");
+        cyan();
+        printf(" Criar novo lembrete |\n");
+        yellow();
+        printf(" 2 - |");
+        cyan();
+        printf(" Ver lembrete        |\n");
+        yellow();
+        printf(" 3 - |");
+        cyan();
+        printf(" Remover lembrete    |\n");
+        yellow();
+        printf(" 4 - |");
+        red();
+        printf(" Sair                | \n");
+        reset();
+
+        blue();
+        printf(" -----------------------------------\n");
+        red();
+        printf(" ");
         scanf("%d",&entradaDeSelecao);
+        reset();
+        blue();
+        printf(" -----------------------------------\n");
+        reset();
 
         if(entradaDeSelecao == 1) {
 
-            printf("Informe o dia do lembrete (dd/mm/aaaa): ");
+            blue();
+            printf(" Informe o dia do lembrete (dd/mm/aaaa): ");
+            red();
             scanf("%d/%d/%d", &dia, &mes, &ano);
+            reset();
             setbuf(stdin, NULL); // isso sempre tem que ser usado antes de um gets para n dar problema.
 
-            printf("\nLembrete: \n");
+            blue();
+            printf("\n Lembrete: \n");
+
+            yellow();
             fgets(&lembrete, 2048, stdin);
 
             primeiroLembrete = inserirLembretePelaFrente(primeiroLembrete, dia, mes, ano, lembrete);
         }
         else if(entradaDeSelecao == 2) {
             
-            entradaChar = 'n';
             setbuf(stdin, NULL);
+            entradaChar = 'n';
+            blue();
             printf("Deseja ver todos os lembretes? (s/n) ");
+            red();
             scanf("%c", &entradaChar);
+            reset();
 
             if(entradaChar == 's'){
+
+                yellow();
                 imprimirTodosOsLembretes(primeiroLembrete);
             }
             else{
@@ -655,10 +708,14 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
                 }
 
                 setbuf(stdin, NULL);
+                blue();
                 printf("Informe o dia do lembrete para a busca (dd/mm/aaaa): ");
+                red();
                 scanf("%d/%d/%d", &diaChave, &mesChave, &anoChave);
+                reset();
 
                 for(i=0;i<buscarLembreteDaAgenda(primeiroLembrete, diaChave, mesChave, anoChave, vetorDasPosicoesDosLembretes);i++){
+                    yellow();
                     imprimeLembreteDaAgenda(primeiroLembrete, vetorDasPosicoesDosLembretes[i]);
                 }
             }
@@ -669,29 +726,44 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
             
             setbuf(stdin, NULL);
             entradaChar = 'n';
-            printf("\nDeseja excluir todos os lembretes? (s/n)\n");
+
+            blue();
+            printf("\n Deseja excluir todos os lembretes? (s/n)\n");
+            red();
             scanf("%c", &entradaChar);
+            reset();
 
             if(entradaChar == 's'){
                 excluirTodosOsLembretes(primeiroLembrete);
                 primeiroLembrete = NULL;
-                printf("\nTodos os lembretes foram excluidos\n");
+                
+                cyan();
+                printf("\n Todos os lembretes foram excluidos\n");
 
                 transferirLembretesParaArquivo(primeiroLembrete);
             }else{
                 int n;
 
                 setbuf(stdin, NULL);
-                printf("\nInforme a data do lembrete que deseja excluir (dd/mm/aaaa): ");
+                blue();
+                printf("\n Informe a data do lembrete que deseja excluir (dd/mm/aaaa): ");
+                red();
                 scanf("%d/%d/%d", &diaChave, &mesChave, &anoChave);
+                reset();
 
                 for(i=0;i<buscarLembreteDaAgenda(primeiroLembrete, diaChave, mesChave, anoChave, vetorDasPosicoesDosLembretes);i++){
+                    yellow();
                     imprimeLembreteDaAgenda(primeiroLembrete, vetorDasPosicoesDosLembretes[i]);
                 }
 
                 setbuf(stdin, NULL);
-                printf("\nQual dos lembretes deseja excluir? (digite o numero da ordem que apareceu)\n");
+                blue();
+                printf("\n Qual dos lembretes deseja excluir?");
+                cyanBold();
+                printf("(Digite o numero da ordem que apareceu)\n");
+                red();
                 scanf("%d", &n);
+                reset();
                 
                 primeiroLembrete = excluirLembrete(primeiroLembrete, vetorDasPosicoesDosLembretes[n-1]);
             }
@@ -706,9 +778,35 @@ EstruturaDeLembrete * abrirAgendaDeLembretes(EstruturaDeLembrete *primeiroLembre
 void abrirMenu() {
     blue();
     printf(" -------- MENU --------\n");
-    reset();
-    printf(" 1 - | Inserir Contato \n 2 - | Listar Contatos \n 3 - | Buscar Contato");
-    printf("\n 4 - | Excluir Contato \n 5 - | Limpar os contatos \n 6 - | Abrir calendario e lembretes \n 7 - | Sair\n");
+    cyan();
+    yellow();
+    printf(" 1 - |");
+    cyan();
+    printf(" Inserir Contato \n");
+    yellow();
+    printf(" 2 - |");
+    cyan();
+    printf(" Listar Contatos \n");
+    yellow();
+    printf(" 3 - |");
+    cyan();
+    printf(" Buscar Contato\n");
+    yellow();
+    printf(" 4 - |");
+    cyan();
+    printf(" Excluir Contato\n");
+    yellow();
+    printf(" 5 - |");
+    cyan();
+    printf(" Limpar os Contatos\n");
+    yellow();
+    printf(" 6 - |");
+    cyan();
+    printf(" Abrir Agenda \n");
+    yellow();
+    printf(" 7 - |");
+    redBold();
+    printf(" Sair\n");
     blue();
     printf(" ----------------------\n");
     reset();
@@ -743,29 +841,49 @@ int main(){
         
         printf("\n");
         abrirMenu();
+        red();
+        printf(" ");
         scanf("%d", &entrada);
+        reset();
+        blue();
+        printf("\n ----------------------\n");
+        reset();
         setbuf(stdin, NULL);
 
         if(entrada == 1){
-            printf("\nNome do novo contato: ");
+            blue();
+            printf(" - Inserindo Contatos -\n");
+            printf(" ----------------------\n");
+
+            printf("\n Nome do novo contato: ");
+
+            cyan();
             gets(&nomeContato);
 
-            printf("Telefone do novo contato: ");
+            blue();
+            printf(" Telefone do novo contato: ");
+
+            cyan();
             gets(&telefoneContato);
 
-            printf("Celular do novo contato: ");
+            blue();
+            printf(" Celular do novo contato: ");
+
+            cyan();
             gets(&celularContato);
 
-            printf("Email do novo contato: ");
+            blue();
+            printf(" Email do novo contato: ");
+            cyan();
             gets(&emailContato);
-
+            reset();
             contato = inserirContatoPelaFrente(contato, nomeContato, telefoneContato, emailContato, celularContato);
         }
 
         if(entrada == 2){
             
             if(contato == NULL) {
-                printf("Nao ha contatos na EstruturaDeContato!");
+                printf("Nao ha contatos na Agenda!");
             } else {
                 imprimirTodosOsContatos(contato);
             }
