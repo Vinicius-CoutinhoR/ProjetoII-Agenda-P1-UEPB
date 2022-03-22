@@ -930,4 +930,4 @@ int main(){
     transferirLembretesParaArquivo(lembretes);
 
     fclose(salvaContatosEmArquivo);
-}
+}// fim
